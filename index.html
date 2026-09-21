@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Activities - English Vocabulary</title>
+<style>
+:root{--green:#0b6b4b;--green2:#eaf8ef;--yellow:#ffd95a;--ink:#17352b;--white:#fff;--shadow:0 10px 25px rgba(20,70,45,.12)}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#eefbf4,#fff);color:var(--ink)}
+header{padding:34px 18px 26px;background:linear-gradient(135deg,#075c42,#16a56d);color:#fff;text-align:center}
+header h1{margin:0;font-size:clamp(32px,6vw,58px);font-weight:900;letter-spacing:.5px}
+header p{margin:8px 0 0;font-size:clamp(16px,2.5vw,22px)}
+.container{width:min(1200px,94%);margin:auto}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center;margin:22px 0}
+.search{flex:1 1 300px;max-width:600px;padding:14px 18px;border:2px solid #b9dfca;border-radius:999px;font-size:16px;outline:none}
+.search:focus{border-color:var(--green)}
+.btn{border:0;border-radius:999px;padding:13px 18px;background:var(--green);color:white;font-weight:700;cursor:pointer}
+.poster{background:#fff;border-radius:24px;padding:12px;box-shadow:var(--shadow);margin-bottom:28px}
+.poster img{display:block;width:100%;border-radius:16px}
+.poster-note{text-align:center;margin:10px 0 4px;color:#527568;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding-bottom:35px}
+.card{background:#fff;border:2px solid #d6efdf;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+.card:hover{transform:translateY(-4px)}
+.pic{height:150px;display:grid;place-items:center;font-size:76px;background:linear-gradient(145deg,#effcf4,#e8f5ff)}
+.pic img{width:100%;height:100%;object-fit:cover}
+.card-body{padding:14px;text-align:center}
+.card h3{margin:0;font-size:20px;color:var(--green)}
+.card p{margin:5px 0 12px;color:#6a7f76}
+.upload{display:inline-block;background:#eef8f1;color:var(--green);border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.upload input{display:none}
+.empty{display:none;text-align:center;padding:40px;color:#678}
+footer{background:#075c42;color:#fff;text-align:center;padding:18px}
+@media(max-width:520px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.pic{height:120px;font-size:60px}.card h3{font-size:16px}.card p{font-size:13px}.upload{font-size:10px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Daily Activities</h1>
+    <p>English Vocabulary • Learn • Practice • Use in Daily Life</p>
+  </div>
+</header>
+
+<main class="container">
+  
+
+  <section class="poster">
+   <img src="c6.png" alt="Daily Activities English Vocabulary Poster">
+   <img src="c5.png" alt="Daily Activities English Vocabulary Poster">
+   <img src="c7.png" alt="Daily Activities English Vocabulary Poster">
+    
+  </section>
+
+
+<footer>Good Habits ★ Bright Future • Daily Activities Vocabulary</footer>
+
+<script>
+const KEY="dailyActivitiesImagesV1";
+let saved=JSON.parse(localStorage.getItem(KEY)||"{}");
+
+function loadImages(){
+  Object.entries(saved).forEach(([i,src])=>{
+    const el=document.getElementById("pic-"+i);
+    if(el) el.innerHTML='<img src="'+src+'" alt="Daily activity">';
+  });
+}
+function setCardImage(input,i){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    saved[i]=e.target.result;
+    localStorage.setItem(KEY,JSON.stringify(saved));
+    document.getElementById("pic-"+i).innerHTML='<img src="'+e.target.result+'" alt="Daily activity">';
+  };
+  reader.readAsDataURL(file);
+}
+function resetImages(){
+  if(confirm("Hapus semua gambar yang sudah Anda ganti?")){
+    saved={}; localStorage.removeItem(KEY); location.reload();
+  }
+}
+document.getElementById("search").addEventListener("input",function(){
+  const q=this.value.toLowerCase().trim();
+  let visible=0;
+  document.querySelectorAll(".card").forEach(card=>{
+    const ok=card.dataset.word.includes(q);
+    card.style.display=ok?"":"none";
+    if(ok) visible++;
+  });
+  document.getElementById("empty").style.display=visible?"none":"block";
+});
+loadImages();
+</script>
+</body>
+</html>
